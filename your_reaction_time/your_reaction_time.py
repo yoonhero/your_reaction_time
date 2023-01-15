@@ -19,6 +19,7 @@ class State(pc.State):
     game_start: int
     stop: bool = False
     score: int = 0
+    con: bool = False
 
     game_start_time: float = None
 
@@ -31,30 +32,34 @@ class State(pc.State):
     def start_game(self):
         self.finish_game = False
         to_sleep = random.random() * 10
+        to_sleep = to_sleep if to_sleep < 4 else 4
 
-        print(to_sleep)
+        # print(to_sleep)
 
-        self.game_start_time = current_milli_time() + to_sleep
+        self.game_start_time = current_milli_time() + to_sleep*1000
 
-    @pc.var
-    def con(self) -> bool:
-        print("askdj;f")
-        if self.game_start_time == None:
-            return False
-        now = current_milli_time()
-        if now >= self.game_start_time:
-            print("??")
-            return True
-        else:
-            return False
+        return self.tick
+
+    # @pc.var
+    # def con(self) -> bool:
+    #     print("askdj;f")
 
     async def tick(self):
-        await asyncio.sleep(1)
-        return self.tick
+        if self.game_start_time == None:
+            self.con = False
+        now = current_milli_time()
+        if now >= self.game_start_time:
+            self.game_start = now
+            self.con = True
+        else:
+            await asyncio.sleep(1)
+
+            return self.tick
 
     def restart(self):
         self.finish_game = True
         self.stop = False
+        self.con = False
 
         self.start_game()
 

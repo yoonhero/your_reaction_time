@@ -61,7 +61,7 @@ sx={{"width": "100%", "height": "100%"}}>
 <title>{`Pynecone App`}</title>
 <meta content="A Pynecone app."
 name="description"/>
-<meta content="favicon.ico"
-property="og:image"/></NextHead></Center>
+<meta property="og:image"
+content="favicon.ico"/></NextHead></Center>
 )
 }
